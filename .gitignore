@@ -1,0 +1,14 @@
+# blackjack/.gitignore
+[Ll]ibrary/
+[Tt]emp/
+[Bb]uild/
+[Bb]uilds/
+obj/
+.vscode/
+.vsconfig
+Logs/
+UserSettings/
+.vs/
+*.csproj
+*.sln
+*.user
