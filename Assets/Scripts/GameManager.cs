@@ -10,7 +10,10 @@ public class GameManager : MonoBehaviour
     public Button dealBtn;
     public Button hitBtn;
     public Button standBtn;
-    public Button betBtn;
+
+    // 플레이어와 딜러 스크립트에 접근
+    public PlayerScript playerScript;
+    public PlayerScript dealerScript;
     void Start()
     {
         // 버튼 클릭 리스너 추가
@@ -21,7 +24,9 @@ public class GameManager : MonoBehaviour
 
     private void DealClicked()
     {
-        throw new NotImplementedException();
+        GameObject.Find("Deck").GetComponent<DeckScript>().Shuffle(); //카드 순서 섞기
+        playerScript.StartHand();
+        dealerScript.StartHand();
     }
 
     private void HitClicked()

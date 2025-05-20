@@ -9,7 +9,7 @@ public class DeckScript : MonoBehaviour
     int currentIndex = 0;
     void Start()
     {
-        
+        GetCardValues();
     }
 
     
