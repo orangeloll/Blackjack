@@ -51,4 +51,22 @@ public class PlayerScript : MonoBehaviour
         cardIndex++;
         return handValue;
     }
+    // 에이스 값이 변화할 필요가 있는지 찾는 것, 1에서 11 또는 11에서 1
+    public void AceCheck()
+    {   // 모든 에이스를 체크
+        foreach(CardScript ace in aceList)
+        {
+            if(handValue + 10 < 22 && ace.GetValueOfCard() == 1)
+            {
+                // 만약 21 안넘으면 에이스 카드 값을 11로 침
+                ace.SetValue(11);
+                handValue += 10;
+            } else if (handValue > 21 && ace.GetValueOfCard() == 11)
+            { //21 넘으면 에이스 카드 값을 1로 쳐서 버스트(22이상이 되는것)을 막음
+                ace.SetValue(1);
+                handValue -= 10;
+
+            }
+        }
+    }
 }
