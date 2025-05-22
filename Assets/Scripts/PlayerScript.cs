@@ -35,7 +35,7 @@ public class PlayerScript : MonoBehaviour
     //플레이어 또는 딜러의 손에 카드 추가
     public int GetCard()
     {
-        // 테이블 위에 있는 카드들에 스프라이트와 값을 할당하기 위해 Deal Card를 사용합니다.
+        // 테이블 위에 있는 카드들에 스프라이트와 값을 할당하기 위해 Deal Card를 사용
         int cardValue = deckScript.DealCard(hand[cardIndex].GetComponent<CardScript>());
         // 화면에 카드를 보여줍니다.
         hand[cardIndex].GetComponent<Renderer>().enabled = true;
@@ -47,7 +47,7 @@ public class PlayerScript : MonoBehaviour
             aceList.Add(hand[cardIndex].GetComponent<CardScript>());
         }
         // 1대신 11을 사용할 수 있는지 체크하기
-        //AceCheck();
+        AceCheck();
         cardIndex++;
         return handValue;
     }
@@ -68,5 +68,19 @@ public class PlayerScript : MonoBehaviour
 
             }
         }
+    }
+
+    // 모든 카드 김추고, 값들 초기화
+    public void ResetHand()
+    {
+        for(int i = 0; i< hand.Length; i++)
+        {
+            hand[i].GetComponent<CardScript>().ResetCard();
+            hand[i].GetComponent<Renderer>().enabled = false;
+        }
+
+        cardIndex = 0;
+        handValue = 0;
+        aceList = new List<CardScript>();
     }
 }
