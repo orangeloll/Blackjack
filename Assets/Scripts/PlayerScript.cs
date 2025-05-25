@@ -21,10 +21,6 @@ public class PlayerScript : MonoBehaviour
     public int cardIndex = 0;
 
     List<CardScript> aceList = new List<CardScript>();
-    private void LateUpdate()
-    {
-
-    }
 
     public void StartHand()
     {
@@ -35,6 +31,12 @@ public class PlayerScript : MonoBehaviour
     //플레이어 또는 딜러의 손에 카드 추가
     public int GetCard()
     {
+
+        if (cardIndex >= hand.Length)
+        {
+            Debug.LogError($" 카드 인덱스 초과: 현재 cardIndex={cardIndex}, hand.Length={hand.Length}");
+            return handValue;
+        }
         // 테이블 위에 있는 카드들에 스프라이트와 값을 할당하기 위해 Deal Card를 사용
         int cardValue = deckScript.DealCard(hand[cardIndex].GetComponent<CardScript>());
         // 화면에 카드를 보여줍니다.
@@ -70,7 +72,7 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    // 모든 카드 김추고, 값들 초기화
+    // 모든 카드 감추고, 값들 초기화
     public void ResetHand()
     {
         for(int i = 0; i< hand.Length; i++)

@@ -46,7 +46,11 @@ public class DeckScript : MonoBehaviour
             int value = cardValues[i];
             cardValues[i] = cardValues[j];
             cardValues[j] = value;
-        } 
+        }
+
+        currentIndex = 1;
+
+        Debug.Log("µ¶ º≈«√ øœ∑· & currentIndex √ ±‚»≠");
     }
 
     public int DealCard(CardScript cardScript)

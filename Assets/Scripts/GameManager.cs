@@ -31,8 +31,12 @@ public class GameManager : MonoBehaviour
 
     // 딜러의 2번째 카드 가리는거
     public GameObject hideCard;
-    internal int winCount;
 
+
+    //퀘스트 관련
+    public int hitCount = 0; //히트 버튼 클릭 횟수
+    internal int winCount = 0; //승리 횟수
+    public int winningStreak = 0; //연속 승리 횟수
     void Start()
     {
         if(questManager == null)
@@ -48,6 +52,9 @@ public class GameManager : MonoBehaviour
             }
         }
         // 버튼 클릭 리스너 추가
+        dealBtn.gameObject.SetActive(true);
+        hitBtn.gameObject.SetActive(false);
+        standBtn.gameObject.SetActive(false);
         dealBtn.onClick.AddListener(() => DealClicked());
         hitBtn.onClick.AddListener(() => HitClicked());
         standBtn.onClick.AddListener(() => StandClicked());
@@ -86,6 +93,7 @@ public class GameManager : MonoBehaviour
         {
             playerScript.GetCard();
             scoreText.text = "수중의 값: " + playerScript.handValue.ToString();
+            hitCount++;
             if(playerScript.handValue > 20) RoundOver();
         }
     }
@@ -95,12 +103,12 @@ public class GameManager : MonoBehaviour
         standClicks++;
         if (standClicks > 1) RoundOver();
         HitDealer();
-        standBtnText.text = "Call";
+        standBtnText.text = "콜";
     }
 
     private void HitDealer()
     {
-        while(dealerScript.handValue < 16 && dealerScript.cardIndex < 10)
+        while(dealerScript.handValue < 17 && dealerScript.cardIndex < 10)
         {
             dealerScript.GetCard();
             dealerScoreText.text = "수중의 값: " + dealerScript.handValue.ToString();
@@ -124,23 +132,27 @@ public class GameManager : MonoBehaviour
         if(playerBust && dealerBust)
         {
             winnerText.text = "버스트";
+            winningStreak = 0;
         }
 
         // 플레이어가 버스트인데 딜러는 아니거나, 딜러가 플레이어보다 수중에 가진 값이 높을 때
         else if (playerBust || (!dealerBust && dealerScript.handValue > playerScript.handValue))
         {
             winnerText.text = "딜러 *승*";
+            winningStreak = 0;
         }
         // 딜러가 버스트인데 플레이어는 아니거나, 플레이어가 딜러보다 수중에 가진 값이 높을 때
         else if(dealerBust || (!playerBust && playerScript.handValue > dealerScript.handValue))
         {
             winnerText.text = "플레이어 *승*";
             winCount++;
+            winningStreak++;
         }
         // 비기는거
         else if (playerScript.handValue == dealerScript.handValue)
         {
             winnerText.text = "비겼습니다";
+            winningStreak = 0;
         }
         else
         {
@@ -156,6 +168,7 @@ public class GameManager : MonoBehaviour
             dealerScoreText.gameObject.SetActive(true);
             hideCard.GetComponent<Renderer>().enabled = false;
             standClicks = 0;
+            
             if (questManager != null)
             {
                 questManager.EvaluateAndToast();
@@ -164,6 +177,8 @@ public class GameManager : MonoBehaviour
             {
                 Debug.LogError("QuestManager가 GameManager에 연결되지 않았습니다!");
             }
+            hitCount = 0;
+            
 
         }
     }

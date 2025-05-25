@@ -19,7 +19,7 @@ void Start()
         {
             title = "첫 승리!",
             description = "처음으로 게임에서 이기기",
-            condition = (p) => gameManager.winCount >= 1
+            condition = (p) => gameManager.winCount == 1
         });
         quests.Add(new Quest
         {
@@ -30,19 +30,44 @@ void Start()
 
         quests.Add(new Quest
         {
-            title = "Hit 3번 이상하고 승리!",
-            description = "3회 이상 Hit하고 이기기",
-            condition = (p) => p.hitCount >= 3 && !p.isBust
+            title = "히트 3번 이상하고 승리!",
+            description = "3회 이상 히트하고 이기기",
+            condition = (p) => gameManager.hitCount >= 3 && !p.isBust
         });
 
         quests.Add(new Quest
         {
             title = "3번 연속 승리!",
-            description = "머임",
-            condition = (p) => false
+            description = "3번 연속 승리 시",
+            condition = (p) => gameManager.winningStreak == 3
         });
+        quests.Add(new Quest
+        {
+            title = "동점!",
+            description = "게임에서 비기기",
+            condition = (p) => gameManager.winnerText.text =="비겼습니다"
+        });
+        quests.Add(new Quest
+        {
+            title = "버스트!",
+            description = "플레이어와 딜러 모두 버스트일 시",
+            condition = (p) => gameManager.winnerText.text == "버스트"
+        });
+        quests.Add(new Quest
+        {
+            title = "노 히트!",
+            description = "히트 클릭 없이 승리",
+            condition = (p) => gameManager.hitCount == 0 && gameManager.winnerText.text == "플레이어 *승*" && p.cardIndex == 2
+        });
+        quests.Add(new Quest
+        {
+            title = "블랙잭!",
+            description = "처음 받은 카드 두장으로 21값 만들어서 승리하기",
+            condition = (p) => gameManager.hitCount == 0 &&gameManager.winnerText.text == "플레이어 *승*" 
+            &&p.cardIndex == 2&&p.handValue == 21
+    });
 
-        
+
         questPanel.SetActive(false); // 처음엔 닫힘 상태
     }
 
@@ -77,9 +102,9 @@ void Start()
         {
             quest.Check(player);
             if (quest.isCompleted)
-                result += $"✅ {quest.title}\n";
+                result += $"<color=red><b>[완료]</b></color> {quest.title}\n";
             else
-                result += $"❌ {quest.title}\n";
+                result += $"{quest.title}\n";
         }
 
         resultText.text = result;
